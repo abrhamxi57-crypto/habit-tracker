@@ -1,0 +1,75 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: habitflow-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-habitflow}
+      POSTGRES_USER: ${POSTGRES_USER:-habitflow}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-habitflow_secure_password}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-habitflow} -d ${POSTGRES_DB:-habitflow}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - habitflow-network
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: habitflow-backend
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      PROJECT_NAME: "HabitFlow API"
+      VERSION: "1.0.0"
+      ENVIRONMENT: ${ENVIRONMENT:-production}
+      DATABASE_URL: postgresql://${POSTGRES_USER:-habitflow}:${POSTGRES_PASSWORD:-habitflow_secure_password}@postgres:5432/${POSTGRES_DB:-habitflow}
+      SECRET_KEY: ${SECRET_KEY:-habitflow-production-secret-key-replace-with-openssl-rand}
+      ACCESS_TOKEN_EXPIRE_MINUTES: 1440
+      REFRESH_TOKEN_EXPIRE_DAYS: 30
+      RATE_LIMIT_SENSITIVE_PER_MINUTE: 30
+      CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost,http://localhost:80,http://127.0.0.1}
+    expose:
+      - "8000"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/health"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+    networks:
+      - habitflow-network
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: habitflow-frontend
+    restart: unless-stopped
+    depends_on:
+      backend:
+        condition: service_healthy
+    ports:
+      - "${PORT:-80}:80"
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost/healthz"]
+      interval: 15s
+      timeout: 3s
+      retries: 3
+    networks:
+      - habitflow-network
+
+volumes:
+  postgres_data:
+    name: habitflow_postgres_data
+
+networks:
+  habitflow-network:
+    name: habitflow_network

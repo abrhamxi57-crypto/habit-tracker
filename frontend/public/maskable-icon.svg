@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="none">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0a0d14"/>
+      <stop offset="100%" stop-color="#111827"/>
+    </linearGradient>
+    <linearGradient id="flame" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#6366f1"/>
+      <stop offset="40%" stop-color="#8b5cf6"/>
+      <stop offset="70%" stop-color="#06b6d4"/>
+      <stop offset="100%" stop-color="#10b981"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f59e0b"/>
+      <stop offset="100%" stop-color="#ff4444"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Full bleed for maskable safe area -->
+  <rect width="512" height="512" fill="url(#bg)"/>
+  
+  <g transform="translate(51.2, 51.2) scale(0.8)">
+    <path d="M150 320 C90 320 60 260 90 200 C120 140 210 170 256 256 C302 342 392 372 422 312 C452 252 422 192 362 192 C290 192 230 290 150 320 Z" 
+          stroke="url(#flame)" stroke-width="40" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M256 160 C264 200 290 215 285 245 C280 270 265 280 256 280 C247 280 232 270 227 245 C222 215 248 200 256 160 Z" 
+          fill="url(#accent)"/>
+    <circle cx="256" cy="256" r="14" fill="#ffffff"/>
+  </g>
+</svg>
