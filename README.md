@@ -1,6 +1,6 @@
 # HabitFlow 🚀
 
-> **HabitFlow** is an advanced, offline-first Progressive Web Application (PWA) and backend service designed for high-performance habit tracking, streak management, behavioral consistency analytics, and deterministic insights.
+> **HabitFlow** is a modern, high-performance, offline-first Progressive Web Application (PWA) and backend service designed for habit tracking, streak management, behavioral consistency analytics, and deterministic productivity insights.
 
 Built with an obsidian command-center aesthetic, HabitFlow gives users a comprehensive view of their habits with GitHub-style contribution heatmaps, weekly matrix tracking, offline two-way synchronization, and deep statistical analytics.
 
